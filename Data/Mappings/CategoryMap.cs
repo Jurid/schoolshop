@@ -4,9 +4,9 @@ using Shop.Models;
 
 namespace Shop.Data.Mappings
 {
-    public class GiftCardMap : IEntityTypeConfiguration<GiftCard>
+    public class CategoryMap : IEntityTypeConfiguration<Category>
     {
-        public void Configure(EntityTypeBuilder<GiftCard> builder)
+        public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder.HasKey(x => x.Id);
         }

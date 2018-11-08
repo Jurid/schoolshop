@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Product>
+
+@{
+    var title = "Каталог товаров";
+    ViewData["Title"] = title;
+}
+
+<h2>@title</h2>
+
+<!--<div class="row">
+    <div class="col-md-1">
+        <a href="/products/add" class="btn btn-primary">Добавить продукт</a>
+    </div>
+</div>-->
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Название продукта</th>
+            <th>Цена</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Price</td>
+                <td>
+                    <a href="products/add_in_basket/@(product.Id)" class="btn btn-info">Добавить в корзину</a>
+                    <a href="products/del_from_basket/@(product.Id)" class="btn btn-danger">Удалить из корзины</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

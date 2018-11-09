@@ -23,6 +23,13 @@ namespace Shop.Controllers
         {
             var basket = await _db.BasketItems.ToListAsync();
 
+            foreach (var item in basket)
+            {
+                var product = await _db.Products.FirstOrDefaultAsync(x => x.Id == item.ProductId);
+
+                item.Product = product;
+            }
+
             return View(basket);
         }
         
@@ -65,7 +72,11 @@ namespace Shop.Controllers
 
             await _db.SaveChangesAsync();
 
-            return RedirectToAction("orders/Index");
+            foreach (var item in items)
+            { _db.BasketItems.Remove(item); }
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Details", "Orders", new {id=order.Id});
         }
 
     }

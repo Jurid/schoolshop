@@ -1,17 +1,18 @@
 ﻿@model Shop.Models.Order
 
 @{
-    ViewData["Title"] = "Details";
+    var title = "Детали заказа";
+    ViewData["Title"] = title;
 }
 
-<h2>Details</h2>
+<h2>@title</h2>
 
 <div>
-    <h4>Order</h4>
+    <h4></h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Number)
+            №
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Number)
@@ -28,24 +29,35 @@
             </tr>
         </thead>
         <tbody>
+            @{decimal total_sum = 0.00m;}
             @foreach (var item in Model.Items)
             {
                 <tr>
                     <td>@item.Product.Name</td>
                     <td>@item.Count</td>
                     <td>@item.Product.Price</td>
-                    @{ var sum = item.Count * item.Product.Price;}
+                    @{ var sum = item.Count * item.Product.Price;
+                        total_sum += sum;}
                     <td>@sum</td>
                     @*<td>
-                        <a href="basket/del_from_basket/@(item.Id)" class="btn btn-danger">Удалить из корзины</a>
-                    </td>*@
+                    <a href="basket/del_from_basket/@(item.Id)" class="btn btn-danger">Удалить из корзины</a>
+                </td>*@
                 </tr>
             }
         </tbody>
+        <tfoot>
+            <tr>
+                <td><b>Итого</b></td>
+                <td></td>
+                <td></td>
+                <td><b>@total_sum</b></td>
+                <td></td>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a> |
+    <a asp-action="Index">Вернуться в список</a>
 </div>

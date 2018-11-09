@@ -1,0 +1,41 @@
+﻿@model IEnumerable<BasketItem>
+
+@{
+    var title = "Корзина";
+    ViewData["Title"] = title;
+}
+
+<h2>@title</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Название продукта</th>
+            <th>Количество</th>
+            <th>Цена</th>
+            <th>Сумма</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>@item.ProductName</td>
+            <td>@item.Count</td>
+            <td>@item.ProductPrice</td>
+          @{ var sum = item.Count * item.ProductPrice;}
+            <td>@sum</td>
+            <td>
+                <a href="basket/del_from_basket/@(item.Id)" class="btn btn-danger">Удалить из корзины</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="col-md-1">
+        <a href="basket/place_order" class="btn btn-primary">Оформить заказ</a>
+    </div>
+</div>

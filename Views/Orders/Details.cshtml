@@ -17,7 +17,34 @@
             @Html.DisplayFor(model => model.Number)
         </dd>
     </dl>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Название продукта</th>
+                <th>Количество</th>
+                <th>Цена</th>
+                <th>Сумма</th>
+                @*<th></th>*@
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Count</td>
+                    <td>@item.Product.Price</td>
+                    @{ var sum = item.Count * item.Product.Price;}
+                    <td>@sum</td>
+                    @*<td>
+                        <a href="basket/del_from_basket/@(item.Id)" class="btn btn-danger">Удалить из корзины</a>
+                    </td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

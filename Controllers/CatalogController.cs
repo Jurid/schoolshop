@@ -27,13 +27,20 @@ namespace Shop.Controllers
 
         [HttpGet]
         [Route("add_in_basket/{id:int}")]
-        public async Task<IActionResult> Product(int? id)
+        public async Task<IActionResult> AddInBasket(int? id)
         {
             if (!id.HasValue)
                 return View();
 
             var product = await _db.Products.FirstOrDefaultAsync(x => x.Id == id);
-            return View(product);
+
+            var basket_item = new BasketItem(product, 1);
+
+            _db.BasketItems.Add(basket_item);
+
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
 
         [HttpPost]

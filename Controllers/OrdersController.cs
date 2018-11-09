@@ -10,6 +10,7 @@ using Shop.Models;
 
 namespace Shop.Controllers
 {
+    [Route("orders")]
     public class OrdersController : Controller
     {
         private readonly ShopContext _context;
@@ -20,12 +21,16 @@ namespace Shop.Controllers
         }
 
         // GET: Orders
+        [HttpGet]
+        [Route("")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Orders.ToListAsync());
         }
 
         // GET: Orders/Details/5
+        [HttpGet]
+        [Route("details/{id:int}")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -40,10 +45,19 @@ namespace Shop.Controllers
                 return NotFound();
             }
 
+            order.Items = await _context.OrderItems.Where(x => x.OrderId==id).ToListAsync();
+
+            foreach (var item in order.Items)
+            {
+                item.Product = await _context.Products.FirstOrDefaultAsync(x => x.Id == item.ProductId);
+            }
+
             return View(order);
         }
 
         // GET: Orders/Create
+        [HttpGet]
+        [Route("create")]
         public IActionResult Create()
         {
             return View();
@@ -53,6 +67,7 @@ namespace Shop.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Route("create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Number")] Order order)
         {
@@ -66,6 +81,8 @@ namespace Shop.Controllers
         }
 
         // GET: Orders/Edit/5
+        [HttpGet]
+        [Route("edit/{id:int}")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -85,6 +102,7 @@ namespace Shop.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Route("edit/{id:int}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Number")] Order order)
         {
@@ -117,6 +135,8 @@ namespace Shop.Controllers
         }
 
         // GET: Orders/Delete/5
+        [HttpGet]
+        [Route("del/{id:int}")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,6 +156,7 @@ namespace Shop.Controllers
 
         // POST: Orders/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Route("del/{id:int}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

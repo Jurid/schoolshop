@@ -18,7 +18,7 @@
         </tr>
     </thead>
     <tbody>
-        @{decimal total_sum = 0.00m;}
+        @{decimal TotalSum = 0.00m;}
         @foreach (var item in Model)
         {
         <tr>
@@ -26,10 +26,10 @@
             <td>@item.Count</td>
             <td>@item.Product.Price</td>
           @{ decimal sum = item.Count * item.Product.Price;
-              total_sum += sum;}
+              TotalSum += sum;}
             <td>@sum</td>
             <td>
-                <a href="basket/del_from_basket/@(item.Id)" class="btn btn-danger">Удалить из корзины</a>
+                <a href="basket/DelFromBasket/@(item.Id)" class="btn btn-danger">Удалить из корзины</a>
             </td>
         </tr>
         }
@@ -39,7 +39,7 @@
             <td><b>Итого</b></td>
             <td></td>
             <td></td>
-            <td><b>@total_sum</b></td>
+            <td><b>@TotalSum</b></td>
             <td></td>
         </tr>
     </tfoot>
@@ -47,6 +47,6 @@
 
 <div class="row">
     <div class="col-md-1">
-        <a href="basket/place_order" class="btn btn-primary">Оформить заказ</a>
+        <a href="basket/PlaceOrder" class="btn btn-primary">Оформить заказ</a>
     </div>
 </div>

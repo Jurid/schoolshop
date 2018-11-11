@@ -5,9 +5,11 @@
         private OrderItem()
         { }
 
-        public OrderItem(Product product, int count)
+        public OrderItem(Order order, Product product, int count)
         {
             Product = product;
+            ProductId = product.Id;
+            OrderId = order.Id;
             Count = count;
         }
 

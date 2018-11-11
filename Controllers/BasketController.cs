@@ -34,11 +34,11 @@ namespace Shop.Controllers
         }
         
         [HttpGet]
-        [Route("del_from_basket/{id:int}")]
+        [Route("delFromBasket/{id:int}")]
         public async Task<IActionResult> Del(int? id)
         {
-            var basket_item = await _db.BasketItems.FirstOrDefaultAsync(x => x.Id == id);
-            _db.BasketItems.Remove(basket_item);
+            var BasketItem = await _db.BasketItems.FirstOrDefaultAsync(x => x.Id == id);
+            _db.BasketItems.Remove(BasketItem);
 
             await _db.SaveChangesAsync();
 
@@ -46,14 +46,14 @@ namespace Shop.Controllers
         }
 
         [HttpGet]
-        [Route("place_order")]
+        [Route("PlaceOrder")]
         public async Task<IActionResult> PlaceOrder()
         {
             var order = new Order();
 
             _db.Orders.Add(order);
 
-            await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync();//запишем в базу для формирования Id заказа
 
             var items = await _db.BasketItems.ToListAsync();
 
@@ -61,19 +61,14 @@ namespace Shop.Controllers
             {
                 var product = await _db.Products.FirstOrDefaultAsync(x => x.Id == item.ProductId);
 
-                var order_item = new OrderItem(product, item.Count);
+                var OrderItem = new OrderItem(order, product, item.Count);
 
-                order_item.OrderId = order.Id;
-                order_item.ProductId = product.Id;
-
-                _db.OrderItems.Add(order_item);
-                
+                _db.OrderItems.Add(OrderItem);
             }
 
-            await _db.SaveChangesAsync();
-
-            foreach (var item in items)
-            { _db.BasketItems.Remove(item); }
+            _db.BasketItems.RemoveRange(_db.BasketItems);
+            //foreach (var item in items)
+            //{ _db.BasketItems.Remove(item); }
             await _db.SaveChangesAsync();
 
             return RedirectToAction("Details", "Orders", new {id=order.Id});
